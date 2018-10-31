@@ -1,0 +1,78 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Stranger Things Lights</title>
+  <meta name="description" content="Stranger Things Lights">
+  <meta name="author" content="Corey Shuman">
+  <link rel="stylesheet" 
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+    crossorigin="anonymous">
+
+</head>
+
+<body>
+  <div class="container">
+    <h1>Stranger Things Lights</h1>
+    <br>
+    <em>Enter a message here:</em>
+    <form id="thing-form" action="/thing">
+      <div class="form-group">
+        <label for="text">Message</label>
+        <input type="text" class="form-control" id="text">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
+  <script type="text/javascript">
+    var form = document.getElementById("thing-form");
+    var input = document.getElementById("text");
+    var xmlHttp = null;
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      if(xmlHttp !== null) {
+        alert("Request in progres...");
+        return;
+      }
+      if(input.value) {
+        sendMessage(input.value);
+      }
+    });
+
+    function sendMessage(text) {
+      xmlHttp = new XMLHttpRequest();
+      xmlHttp.onreadystatechange = httpProcessRequest;
+      var formData = new FormData();
+      formData.append("text", input.value);
+      xmlHttp.open("POST", "/thing");
+      xmlHttp.send(formData);
+    }
+
+    function httpProcessRequest() {
+      if(xmlHttp.readyState === 4) {
+        if(xmlHttp.status === 200) {
+          alert("Message Sent Successfully!");
+          input.value = "";
+        } else {
+          alert("Message failed to send.");
+        }
+        xmlHttp = null;
+      }
+    }
+  </script>
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous">
+  </script>
+  <script 
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
+    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" 
+    crossorigin="anonymous">
+  </script>
+</body>
+</html>
